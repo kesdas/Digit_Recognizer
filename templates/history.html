@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{% block content %}
+
+  {% for digit in digits.items %}
+{% if digit.guess == 'true' %}
+<p>Written <img class="thumbnail"
+        src="{{ digit.digit_image }}"> model predicted {{ digit.prediction }} <span
+        style="color: green">correctly</span></p>
+{% if digit.prob %}
+<img class="thumbnail_big" src="{{ digit.prob }}">
+{% endif %}
+{% else %}
+<p>Written <img class="thumbnail"
+        src="{{ digit.digit_image }}"> model predicted {{ digit.prediction }} <span
+        style="color: red">poorly</span></p>
+{% if digit.prob %}
+<img class="thumbnail_big" src="{{ digit.prob }}">
+{% endif %}
+{% endif %}
+<p><a href="{{ url_for('delete', id=digit.id)}}">Delete</a></p>
+<hr>
+  {% endfor %}
+{% for page_num in digits.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if digits.page == page_num %}
+      <a class="btn btn-info mb-4" href="{{ url_for('history', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4" href="{{ url_for('history', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+  {% else %}
+    ...
+  {% endif %}
+{% endfor %}
+<p><a href="{{ url_for('enter_new')}}">Enter new</a></p>
+
+{% endblock %}

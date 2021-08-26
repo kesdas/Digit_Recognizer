@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="drawing_area">
+    <div class="options">
+        <button type="button" class="btn default" onclick="add_pixel()">Thickness+</button>
+        <button type="button" class="btn default" onclick="reduce_pixel()">Thickness-</button>
+        <button type="button" class="btn default" onclick="reset()">Clear
+        </button>
+    </div>
+        <canvas id="paint" width="250" height="250"></canvas>
+        <div class="equal">=></div>
+        <div class="prediction">{{ answer }}</div>
+</div>
+    <div class="save_submit">
+        <button id="submit" class="btn default" onclick="submit()">Submit</button>
+        <button id="save" class="btn default" onclick="save()">Save</button>
+    </div>
+<script src=" {{ url_for('static', filename='script.js') }}"></script>
+<script>pencil()</script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1> Draw your digit</h1>
+<h2>Success rate: {{ correct_guess }}/{{ total_guess}} ({{ prct }}%)</h2>
+<div class="drawing_area" id="img_div">
+    <div class="options">
+        <button type="button" class="btn default" onclick="add_pixel()">Thickness+</button>
+        <button type="button" class="btn default" onclick="reduce_pixel()">Thickness-</button>
+        <button type="button" class="btn default" onclick="reset()">Clear
+        </button>
+    </div>
+        <canvas id="paint" width="250" height="250"></canvas>
+        <div id="prediction">?</div>
+        <img id="show_graph" src="">
+
+</div>
+    <div class="save_submit">
+        <button id="submit" class="btn default" onclick="submit()">Guess</button>
+        <div class="guess_box">
+        <input type="checkbox" id="guess_box" value="true"><label>Tick if guess was correct</label>
+        </div>
+        <button id="save" class="btn default" onclick="save()">Save Result</button>
+    </div>
+<script src=" {{ url_for('static', filename='script.js') }}"></script>
+<script>pencil()</script>
+{% endblock %}
