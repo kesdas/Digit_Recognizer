@@ -1,10 +1,12 @@
 import numpy as np
+import pandas as pd
 import torch
 from time import time
 from torchvision import datasets, transforms
 from torch import nn, optim
 import imgaug.augmenters as iaa
 from torch.utils.data import Dataset
+import seaborn as sns
 
 
 class Flatten(torch.nn.Module):
@@ -40,11 +42,11 @@ class DataSet:
                 transforms.ToTensor()
                 ])
         self.trainset = datasets.MNIST('PATH_TO_STORE_TRAINSET', download=True, train=True)
-        self.trainset = CustomDataset(self.trainset, transform=self.transform)
+        self.trainset1 = CustomDataset(self.trainset, transform=self.transform)
         self.valset = datasets.MNIST('PATH_TO_STORE_TESTSET', download=True, train=False)
-        self.valset = CustomDataset(self.valset, transform=self.transform)
-        self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=64, shuffle=True)
-        self.valloader = torch.utils.data.DataLoader(self.valset, batch_size=64, shuffle=True)
+        self.valset1 = CustomDataset(self.valset, transform=self.transform)
+        self.trainloader = torch.utils.data.DataLoader(self.trainset1, batch_size=64, shuffle=True)
+        self.valloader = torch.utils.data.DataLoader(self.valset1, batch_size=64, shuffle=True)
 
 
 data = DataSet()
@@ -65,7 +67,7 @@ class Model:
                           nn.MaxPool2d((2, 2), stride=2),
                           nn.ReLU(),
                           Flatten(),
-                          nn.Linear(72, 30),
+                          nn.Linear(392, 30),
                           nn.ReLU(),
                           nn.Linear(30, self.output_size),
                           nn.LogSoftmax(dim=1))
@@ -102,7 +104,7 @@ class ModelTrainer:
         self.save_model()
 
     def save_model(self):
-        torch.save(self.model, 'full_model_CNN.pt')
+        torch.save(self.model, 'full_model_CNN.pt.pt')
 
 
 class ModelTester:
@@ -121,12 +123,6 @@ class ModelTester:
                 if (true_label == pred_label):
                     correct_count += 1
                 all_count += 1
-
         print("Number Of Images Tested =", all_count)
         print("\nModel Accuracy =", (correct_count / all_count))
 
-
-if __name__ == '__main__':
-    ModelTrainer()
-    ModelTester()
-    Model()

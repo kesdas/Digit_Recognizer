@@ -10,6 +10,7 @@ import base64
 import io
 import re
 from torchsummary import summary
+from train_model import Flatten
 
 
 model = torch.load('./full_model_CNN.pt')

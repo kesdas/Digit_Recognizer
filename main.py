@@ -1,13 +1,17 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
 from train_model import Flatten
 from load_model import Prediction
 
 
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'digits_db.sqlite')
+db_user = os.environ['db_user']
+db_pass = os.environ['db_pass']
+db_ip = os.environ['db_ip']
+db_name = os.environ['db_name']
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_pass}@{db_ip}/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 model = Prediction()
@@ -16,10 +20,10 @@ model = Prediction()
 class Digit(db.Model):
     __tablename__ = 'handwriten_digits'
     id = db.Column(db.Integer, primary_key=True)
-    digit_image = db.Column('digit_image', db.String)
-    prediction = db.Column('prediction', db.String)
-    guess = db.Column('good_bad', db.String)
-    prob = db.Column('prob', db.String)
+    digit_image = db.Column('digit_image', db.Text(1000000))
+    prediction = db.Column('prediction', db.Text(1000000))
+    guess = db.Column('good_bad', db.String(10))
+    prob = db.Column('prob', db.Text(1000000))
 
 
 def calculate_rate():
