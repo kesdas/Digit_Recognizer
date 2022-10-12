@@ -6,12 +6,9 @@ from train_model import Flatten
 from load_model import Prediction
 
 
+basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-db_user = os.environ['db_user']
-db_pass = os.environ['db_pass']
-db_ip = os.environ['db_ip']
-db_name = os.environ['db_name']
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_pass}@{db_ip}/{db_name}'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'digits_db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 model = Prediction()
